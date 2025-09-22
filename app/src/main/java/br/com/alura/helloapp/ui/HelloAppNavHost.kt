@@ -1,11 +1,15 @@
 package br.com.alura.helloapp.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import br.com.alura.helloapp.navigation.*
+import br.com.alura.helloapp.ui.login.SessaoViewModel
 
 @Composable
 fun HelloAppNavHost(
@@ -88,6 +92,13 @@ fun HelloAppNavHost(
             },
         )
     }
+    val viewModel = hiltViewModel<SessaoViewModel>()
+    val state = viewModel.uiState.collectAsState()
+    LaunchedEffect(key1 = state.value.logado) {
+        if (!state.value.logado) {
+            navController.navegaParaLoginElimpaBackStack()
+        }
+    }
 }
 
 
@@ -125,6 +136,10 @@ fun NavHostController.navegaParaFormularioUsuario(idUsuario: String) {
 
 fun NavHostController.navegaParaLogin() {
     navigate(DestinosHelloApp.Login.rota)
+}
+
+fun NavHostController.navegaParaLoginElimpaBackStack() {
+    navegaLimpo(DestinosHelloApp.LoginGraph.rota)
 }
 
 fun NavHostController.navegaParaHome() {

@@ -1,7 +1,5 @@
 package br.com.alura.helloapp.ui.login
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import br.com.alura.helloapp.data.User
 import br.com.alura.helloapp.database.UserDao
@@ -14,7 +12,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FormularioLoginViewModel @Inject constructor(
-    private val dataStore: DataStore<Preferences>,
     private val userDao: UserDao
 ) : ViewModel() {
 
@@ -32,12 +29,12 @@ class FormularioLoginViewModel @Inject constructor(
         }
     }
 
-    suspend fun salvaLogin() {
+    suspend fun salvaLogin() = with(_uiState.value) {
         userDao.insert(
             User(
-                idUser = _uiState.value.usuario,
-                password = _uiState.value.senha,
-                name = uiState.value.nome
+                idUser = usuario,
+                password = senha,
+                name = nome
             )
         )
     }

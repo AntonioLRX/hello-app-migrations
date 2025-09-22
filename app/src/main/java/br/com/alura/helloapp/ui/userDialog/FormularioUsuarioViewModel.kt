@@ -2,11 +2,13 @@ package br.com.alura.helloapp.ui.userDialog
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.helloapp.data.User
 import br.com.alura.helloapp.database.UserDao
+import br.com.alura.helloapp.preferences.PreferencesKey
 import br.com.alura.helloapp.util.ID_USUARIO_ATUAL
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,5 +76,6 @@ class FormularioUsuarioViewModel @Inject constructor(
                 idUser = _uiState.value.nomeUsuario,
             )
         )
+        if (nomeUsuario.equals(dataStore.data.first()[PreferencesKey.USUARIO_ATUAL])) dataStore.edit { it.remove(PreferencesKey.USUARIO_ATUAL) }
     }
 }
