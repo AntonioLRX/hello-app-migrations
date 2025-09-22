@@ -12,9 +12,13 @@ import br.com.alura.helloapp.database.converters.Converters
 
 @Database(
     entities = [Contato::class, User::class],
-    version = 4,
+    version = 5,
     exportSchema = true,
-    autoMigrations = [AutoMigration(2, 3), AutoMigration(3, 4, Migration3TO4::class)]
+    autoMigrations = [
+        AutoMigration(2, 3),
+        AutoMigration(3, 4, Migration3TO4::class),
+        AutoMigration(4, 5),
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class HelloAppDatabase : RoomDatabase() {

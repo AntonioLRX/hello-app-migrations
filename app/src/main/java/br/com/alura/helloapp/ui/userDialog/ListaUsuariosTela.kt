@@ -2,8 +2,19 @@ package br.com.alura.helloapp.ui.userDialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -26,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.alura.helloapp.R
+import br.com.alura.helloapp.data.User
 import br.com.alura.helloapp.ui.components.AsyncImagePerfil
 import br.com.alura.helloapp.ui.theme.HelloAppTheme
 
@@ -123,6 +135,14 @@ fun CaixaDialogoContasUsuario(
                         .height(200.dp)
                         .padding(horizontal = 16.dp)
                 ) {
+
+                    items(state.accounts) { user ->
+                        UsuarioItem(
+                            user = user,
+                            onClickPerfiUsuario = onClickListaContatosPorUsuario
+                        )
+                    }
+
                     item {
                         ItensAcaoEmConta(
                             onClickGerenciarUsuarios = onClickGerenciaUsuarios,
@@ -197,12 +217,14 @@ private fun ItensAcaoEmConta(
 
 @Composable
 fun UsuarioItem(
+    user: User,
     onClickPerfiUsuario: (nomeUsuario: String) -> Unit = {}
 ) {
     Row(
         Modifier
             .padding(vertical = 12.dp)
             .clickable {
+                onClickPerfiUsuario(user.idUser)
             }
     ) {
         AsyncImagePerfil(
@@ -217,13 +239,13 @@ fun UsuarioItem(
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Nome exemplo",
+                text = user.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Usuario exemplo",
+                text = user.idUser,
                 color = Color.Gray,
                 fontSize = 12.sp
             )
@@ -235,7 +257,12 @@ fun UsuarioItem(
 @Preview(showBackground = true)
 @Composable
 fun UsuarioItemPreview() {
-    UsuarioItem()
+    val user = User(
+        name = "Joãozinho",
+        idUser = "João",
+        password = "11233"
+    )
+    UsuarioItem(user = user)
 }
 
 @Preview

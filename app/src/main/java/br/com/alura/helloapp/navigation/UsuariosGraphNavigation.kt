@@ -8,7 +8,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
-import br.com.alura.helloapp.ui.userDialog.*
+import br.com.alura.helloapp.ui.userDialog.CaixaDialogoContasUsuario
+import br.com.alura.helloapp.ui.userDialog.FormularioUsuarioTela
+import br.com.alura.helloapp.ui.userDialog.FormularioUsuarioViewModel
+import br.com.alura.helloapp.ui.userDialog.GerenciaUsuariosTela
+import br.com.alura.helloapp.ui.userDialog.GerenciaUsuariosViewModel
+import br.com.alura.helloapp.ui.userDialog.ListaUsuariosViewModel
 import br.com.alura.helloapp.util.ID_USUARIO_ATUAL
 import kotlinx.coroutines.launch
 
@@ -42,8 +47,9 @@ fun NavGraphBuilder.usuariosGraph(
                     onClickAdicionaNovaConta = {
                         onNavegaParaLogin()
                     },
-                    onClickListaContatosPorUsuario = { novoUsuario ->
+                    onClickListaContatosPorUsuario = { newUser ->
                         coroutineScope.launch {
+                            viewModel.updateUserLogged(newUser)
                             onNavegaParaHome()
                         }
                     },
@@ -82,11 +88,13 @@ fun NavGraphBuilder.usuariosGraph(
                 onClickVolta = onVolta,
                 onClickSalva = {
                     coroutineScope.launch {
+                        viewModel.update()
                         onVolta()
                     }
                 },
                 onClickApaga = {
                     coroutineScope.launch {
+                        viewModel.delete()
                         onVolta()
                     }
                 },
